@@ -10,4 +10,6 @@ Una vez limpia la base de datos, mediante el módulo SQLAlchemy, cargamos los 7 
 
 Posteriormente, y una vez ya cargados los datos en Workbench, establecemos las conexiones entre las diferentes tablas.
 
+![Modelo relacional](/img/model.jpg)
+
 Finalmente, también con el módulo SQLAlchemy, se realizaron 10 consultas utilizando SQL.
