@@ -1,0 +1,87 @@
+#Renombrar columna concatenando el first y el last name
+select actor_id, actor.full_name, film_id, film.title, old_HDD.release_year, category_id
+from actor
+inner join old_hdd
+on old_hdd.full_name = actor.full_name
+inner join film
+on film.title = old_hdd.title;
+drop table old_hdd;
+alter table old_HD rename old_HDD;
+
+
+#Géneros de películas
+select f.film_id, title, name
+from film f
+inner join old_hdd od
+on f.film_id = od.film_id
+inner join category c
+on od.category_id =  c.category_id;
+
+
+#
+select f.film_id, title, name, l.name
+from film f
+inner join language l
+on f.language_id = l.language
+order by l.name
+
+#Peliculas de Acción en las que aparece Val Bolger
+select f.title as film, c.name as category , a.full_name as actor
+from category as c
+
+
+inner join old_HDD as od
+on c.category_id = od.category_id
+inner join actor as a
+on od.actor_id = a.actor_id
+inner join inventory as i
+on od.film_id = i.film_id
+inner join film as f
+on i.film_id = f.film_id
+where c.name = 'Action' and a.full_name = 'VAL BOLGER';
+
+
+
+# Best Children movies (basado en el rental rates)
+select distinct f.title as film, c.name as category, f.rental_rate
+from film as f
+inner join old_HDD as od
+on f.film_id = od.film_id
+inner join category as c
+on od.category_id = c.category_id
+where c.name = 'Children'
+order by rental_rate desc;
+
+
+#Numero de actores en 5 películas random
+select f.title, count(od.actor_id) as nº_actors
+from film as f
+inner join old_HDD as od
+on f.film_id = od.film_id
+group by f.title
+order by rand() limit 5;
+
+#Seleccionamos todas las películas en inglés
+SELECT title, name
+from film f, language l
+where f.language_id=l.language_id and l.name='English';
+
+
+#Número de películas por género
+select c.name, count(f.title) AS 'Peliculas por género'
+from film f, old_hdd oh, category c 
+where f.film_id = oh.film_id and c.category_id = oh.category_id
+group by oh.category_id
+
+#Largometraje/Cortometraje
+
+SELECT length,
+	CASE WHEN length > 130 THEN 'largometraje'
+	ELSE 'cortometraje' 
+    END AS 'movie_duration'
+	FROM film;
+
+#Seleccionar las películas que tienen trailer
+SELECT title, TRAILERS
+from (SELECT * FROM FILM WHERE TRAILERS='Y') AS PRUEBA;
+
